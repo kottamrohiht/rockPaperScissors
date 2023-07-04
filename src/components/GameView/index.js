@@ -56,7 +56,7 @@ class GameView extends Component {
     const userOptions = choicesList.filter(each => each.id === id)
 
     const opponentOption =
-      choicesList[Math.ceil(Math.random() * choicesList.length - 1)]
+      choicesList[Math.floor(Math.random() * choicesList.length)]
 
     const myId = userOptions[0].id
     const opponentId = opponentOption.id
@@ -81,14 +81,16 @@ class GameView extends Component {
         totalScore: prevState.totalScore,
         gameResult: 'IT IS DRAW',
       }))
-    } else {
+    } else if (
+      (myId === 'SCISSORS' && opponentId === 'ROCK') ||
+      (myId === 'PAPER' && opponentId === 'SCISSORS') ||
+      (myId === 'ROCK' && opponentId === 'PAPER')
+    ) {
       this.setState(prevState => ({
         showResult: true,
         userImg: userOptions[0].imageUrl,
         opponentImg: opponentOption.imageUrl,
-        totalScore: `${
-          prevState.totalScore > 0 ? prevState.totalScore - 1 : 0
-        }`,
+        totalScore: prevState.totalScore - 1,
         gameResult: 'YOU LOSE',
       }))
     }
